@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSDHacks - Autonomous Fluid Experience</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/components.css">
+    <title>MSDHacks - Fluid Experience</title>
     <style>
-        /* Reset and Base */
         * {
             margin: 0;
             padding: 0;
@@ -15,13 +12,13 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #000;
             color: #fff;
             overflow-x: hidden;
         }
 
-        /* Fluid Canvas - Full Screen Background */
+        /* Fluid Canvas - VISIBLE Background */
         #fluidCanvas {
             position: fixed;
             top: 0;
@@ -29,134 +26,135 @@
             width: 100vw;
             height: 100vh;
             z-index: 1;
-            pointer-events: none;
         }
 
-        /* Content Overlay */
-        .glass-container {
+        /* Content on top of fluid */
+        .content {
             position: relative;
             z-index: 10;
             min-height: 100vh;
         }
 
-        /* Navbar - Dark with subtle glass */
+        /* Navbar */
         .navbar {
-            background: rgba(0, 0, 0, 0.7) !important;
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(0, 255, 178, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: transparent !important;
-            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
+            border-bottom: 1px solid rgba(0, 255, 178, 0.3);
         }
 
-        .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
+        .logo {
+            font-size: 1.5rem;
             font-weight: 900;
-            text-shadow: 
-                0 0 40px rgba(0, 255, 178, 0.5),
-                0 0 80px rgba(0, 255, 178, 0.3),
-                0 4px 20px rgba(0, 0, 0, 0.9);
-            margin-bottom: 2rem;
-        }
-
-        .glitch-text {
             color: #00FFB2;
-            animation: glow 2s ease-in-out infinite alternate;
+            text-decoration: none;
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 
-                    0 0 20px #00FFB2,
-                    0 0 40px #00FFB2,
-                    0 0 60px #00FFB2;
-            }
-            to {
-                text-shadow: 
-                    0 0 30px #00FFB2,
-                    0 0 60px #00FFB2,
-                    0 0 90px #00FFB2,
-                    0 0 120px #00FFB2;
-            }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
         }
 
-        /* Glass Cards */
-        .glass-card {
-            background: rgba(0, 0, 0, 0.4) !important;
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(0, 255, 178, 0.2);
-            border-radius: 20px;
-            box-shadow: 
-                0 8px 32px 0 rgba(0, 0, 0, 0.6),
-                inset 0 0 20px rgba(0, 255, 178, 0.05);
-            transition: all 0.3s ease;
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .glass-card:hover {
-            background: rgba(0, 0, 0, 0.6) !important;
-            border-color: rgba(0, 255, 178, 0.5);
-            transform: translateY(-5px);
-            box-shadow: 
-                0 12px 40px 0 rgba(0, 255, 178, 0.3),
-                inset 0 0 30px rgba(0, 255, 178, 0.1);
+        .nav-link:hover {
+            color: #00FFB2;
         }
 
-        /* Buttons */
-        .btn-primary {
-            background: rgba(0, 255, 178, 0.2) !important;
-            backdrop-filter: blur(10px);
-            border: 2px solid #00FFB2 !important;
-            color: #00FFB2 !important;
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 178, 0.4),
-                inset 0 0 20px rgba(0, 255, 178, 0.1);
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #00FFB2;
+            color: #000;
+            border: none;
         }
 
         .btn-primary:hover {
-            background: rgba(0, 255, 178, 0.4) !important;
-            box-shadow: 
-                0 0 40px rgba(0, 255, 178, 0.6),
-                inset 0 0 30px rgba(0, 255, 178, 0.2);
+            background: #00d99a;
             transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 178, 0.6);
         }
 
         .btn-outline {
-            background: rgba(255, 255, 255, 0.05) !important;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3) !important;
-            color: #fff !important;
-            transition: all 0.3s ease;
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
 
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.15) !important;
-            border-color: #00FFB2 !important;
-            color: #00FFB2 !important;
+            border-color: #00FFB2;
+            color: #00FFB2;
         }
 
-        /* Stats Section */
-        .stats-section {
-            background: transparent !important;
-            padding: 4rem 0;
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
         }
 
-        .stat-item {
-            background: rgba(0, 0, 0, 0.5) !important;
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 40px rgba(0, 255, 178, 0.5);
+        }
+
+        .hero .highlight {
+            color: #00FFB2;
+            text-shadow: 0 0 60px rgba(0, 255, 178, 0.8);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 178, 0.3);
+            text-align: center;
         }
 
         .stat-number {
@@ -166,268 +164,146 @@
             text-shadow: 0 0 30px rgba(0, 255, 178, 0.6);
         }
 
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
         /* Categories */
-        .categories-section {
-            background: transparent !important;
-            padding: 4rem 0;
+        .categories {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .categories h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
         .category-card {
-            background: rgba(0, 0, 0, 0.4) !important;
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 178, 0.2);
             padding: 2rem;
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 178, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
         }
 
         .category-card:hover {
-            background: rgba(0, 0, 0, 0.6) !important;
-            border-color: rgba(0, 255, 178, 0.5);
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-10px);
+            border-color: #00FFB2;
+            box-shadow: 0 10px 40px rgba(0, 255, 178, 0.3);
         }
 
         .category-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 178, 0.5));
+        }
+
+        .category-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card p {
+            opacity: 0.8;
         }
 
         /* Footer */
         .footer {
-            background: rgba(0, 0, 0, 0.8) !important;
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0, 255, 178, 0.2);
-            padding: 2rem 0;
-        }
-
-        /* Badge */
-        .badge {
-            background: rgba(0, 255, 178, 0.1) !important;
-            border: 1px solid rgba(0, 255, 178, 0.3);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: #00FFB2;
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(0, 255, 178, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 0 10px rgba(0, 255, 178, 0);
-            }
-        }
-
-        /* Text Shadows for Readability */
-        h1, h2, h3, p {
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Hero Subtitle */
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 3rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .rotating-text {
-            color: #00FFB2;
-            font-weight: 700;
-        }
-
-        /* Section Header */
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 3rem;
-        }
-
-        .price-badge {
-            background: rgba(0, 255, 178, 0.15);
-            border: 1px solid rgba(0, 255, 178, 0.3);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            color: #00FFB2;
-            font-weight: 700;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: transparent !important;
-            padding: 6rem 0;
+            padding: 2rem;
             text-align: center;
-        }
-
-        .cta-section h2 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
+            border-top: 1px solid rgba(0, 255, 178, 0.3);
         }
     </style>
 </head>
 <body>
-    <!-- Fluid Canvas Background -->
+    <!-- Fluid Canvas -->
     <canvas id="fluidCanvas"></canvas>
 
-    <!-- Glassmorphic Content Overlay -->
-    <div class="glass-container">
+    <!-- Content -->
+    <div class="content">
         <!-- Navbar -->
-        <header id="navbar" class="navbar">
-            <div class="container navbar-content">
-                <a href="/" class="logo">
-                    <span class="logo-main">MSD</span>
-                    <span class="logo-sub">_Hacks</span>
-                </a>
-
-                <nav class="nav-links" id="navLinks">
-                    <a href="products.html" class="nav-link">Products</a>
-                </nav>
-
-                <div class="nav-actions">
-                    <a href="cart.html" class="cart-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        <span class="cart-badge" id="cartBadge">0</span>
-                    </a>
-                    <button class="btn btn-outline btn-sm" id="loginBtn" onclick="window.location.href='login.html'">Login</button>
-                </div>
-
-                <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+        <nav class="navbar">
+            <a href="/" class="logo">MSD_Hacks</a>
+            <div class="nav-links">
+                <a href="products.html" class="nav-link">Products</a>
+                <a href="cart.html" class="nav-link">Cart</a>
+                <a href="login.html" class="btn btn-outline">Login</a>
             </div>
-        </header>
+        </nav>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="products.html" class="mobile-menu-link">Products</a>
-            <a href="cart.html" class="mobile-menu-link">Cart</a>
-            <button class="btn btn-outline w-full" onclick="window.location.href='login.html'">Login</button>
-        </div>
-
-        <!-- Hero Section -->
+        <!-- Hero -->
         <section class="hero">
-            <div class="container hero-content">
-                <div class="badge glass-card" style="display: inline-flex; padding: 0.5rem 1rem;">
-                    <span class="pulse-dot"></span>
-                    <span>v2.0 is live</span>
-                </div>
-
-                <h1 class="hero-title">
-                    Your Productivity <br>
-                    <span class="glitch-text">Deserves Better Tools</span>
-                </h1>
-
-                <div class="hero-subtitle">
-                    <span>Built for</span>
-                    <span class="rotating-text" id="rotatingText">Students.</span>
-                </div>
-
-                <div class="hero-actions">
-                    <button class="btn btn-lg btn-primary" onclick="window.location.href='products.html'">
-                        Explore Tools
-                    </button>
-                    <button class="btn btn-lg btn-outline">
-                        See How It Works
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                </div>
+            <h1>Your Productivity<br><span class="highlight">Deserves Better Tools</span></h1>
+            <p>Built for Students & Hackers</p>
+            <div class="hero-actions">
+                <a href="products.html" class="btn btn-primary">Explore Tools</a>
+                <a href="#" class="btn btn-outline">See How It Works</a>
             </div>
         </section>
 
-        <!-- Stats Section -->
-        <section class="stats-section">
-            <div class="container stats-grid">
-                <div class="stat-item glass-card">
-                    <div class="stat-number" data-target="10000">0</div>
-                    <div class="stat-label">Active Students</div>
-                </div>
-                <div class="stat-item glass-card">
-                    <div class="stat-number" data-target="5">0</div>
-                    <div class="stat-label">Average Time Saved (hrs/week)</div>
-                </div>
-                <div class="stat-item glass-card">
-                    <p class="stat-quote">"Hack your productivity. Not your wallet."</p>
-                </div>
+        <!-- Stats -->
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-number">10,000+</div>
+                <div class="stat-label">Active Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Hours Saved/Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">₹299</div>
+                <div class="stat-label">Max Price</div>
             </div>
         </section>
 
-        <!-- Categories Section -->
-        <section class="categories-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Level up your workflow</h2>
-                    <div class="price-badge glass-card">Everything under ₹299</div>
+        <!-- Categories -->
+        <section class="categories">
+            <h2>Level Up Your Workflow</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="category-icon">⚡</div>
+                    <h3>Browser Extensions</h3>
+                    <p>Automate tedious web tasks instantly</p>
                 </div>
-
-                <div class="categories-grid">
-                    <div class="category-card glass-card">
-                        <div class="category-icon">⚡</div>
-                        <h3>Browser Extensions</h3>
-                        <p>Automate tedious web tasks instantly.</p>
-                    </div>
-                    <div class="category-card glass-card">
-                        <div class="category-icon">☕</div>
-                        <h3>Productivity Widgets</h3>
-                        <p>Dashboard tools to keep you focused.</p>
-                    </div>
-                    <div class="category-card glass-card">
-                        <div class="category-icon">🤖</div>
-                        <h3>AI Automation</h3>
-                        <p>Scripts that do your homework. Almost.</p>
-                    </div>
-                    <div class="category-card glass-card">
-                        <div class="category-icon">💻</div>
-                        <h3>Templates & Presets</h3>
-                        <p>Ready-to-use configs for power users.</p>
-                    </div>
+                <div class="category-card">
+                    <div class="category-icon">☕</div>
+                    <h3>Productivity Widgets</h3>
+                    <p>Dashboard tools to keep you focused</p>
                 </div>
-            </div>
-        </section>
-
-        <!-- Final CTA -->
-        <section class="cta-section">
-            <div class="container cta-content">
-                <h2>Ready to hack your life?</h2>
-                <button class="btn btn-lg btn-primary" onclick="window.location.href='products.html'">
-                    Browse All Tools
-                </button>
+                <div class="category-card">
+                    <div class="category-icon">🤖</div>
+                    <h3>AI Automation</h3>
+                    <p>Scripts that do your homework. Almost.</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h3>Templates & Presets</h3>
+                    <p>Ready-to-use configs for power users</p>
+                </div>
             </div>
         </section>
 
         <!-- Footer -->
         <footer class="footer">
-            <div class="container footer-content">
-                <p>&copy; 2026 MSDHacks. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
-                    <a href="#">Contact</a>
-                </div>
-            </div>
+            <p>&copy; 2026 MSDHacks. All rights reserved.</p>
         </footer>
     </div>
 
-    <script src="assets/js/data.js"></script>
-    <script src="assets/js/cart.js"></script>
-    <script src="assets/js/main.js"></script>
     <script src="assets/js/fluid-complete.js"></script>
 </body>
 </html>
