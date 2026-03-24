@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <style>
+        /* Reset and Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
         /* Fluid Canvas - Full Screen Background */
         #fluidCanvas {
             position: fixed;
@@ -18,99 +32,246 @@
             pointer-events: none;
         }
 
-        /* Glassmorphic Overlay */
+        /* Content Overlay */
         .glass-container {
             position: relative;
             z-index: 10;
             min-height: 100vh;
         }
 
-        /* Transparent Sections - Fluid is the Star */
-        .hero, .stats-section, .categories-section, .cta-section {
-            background: transparent !important;
-            backdrop-filter: none !important;
-        }
-
-        /* Glassmorphic Cards - Subtle */
-        .glass-card {
-            background: rgba(10, 10, 20, 0.15) !important;
+        /* Navbar - Dark with subtle glass */
+        .navbar {
+            background: rgba(0, 0, 0, 0.7) !important;
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(0, 255, 178, 0.1);
+            border-bottom: 1px solid rgba(0, 255, 178, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: transparent !important;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-shadow: 
+                0 0 40px rgba(0, 255, 178, 0.5),
+                0 0 80px rgba(0, 255, 178, 0.3),
+                0 4px 20px rgba(0, 0, 0, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .glitch-text {
+            color: #00FFB2;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 20px #00FFB2,
+                    0 0 40px #00FFB2,
+                    0 0 60px #00FFB2;
+            }
+            to {
+                text-shadow: 
+                    0 0 30px #00FFB2,
+                    0 0 60px #00FFB2,
+                    0 0 90px #00FFB2,
+                    0 0 120px #00FFB2;
+            }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(0, 0, 0, 0.4) !important;
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(0, 255, 178, 0.2);
             border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 
+                0 8px 32px 0 rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(0, 255, 178, 0.05);
             transition: all 0.3s ease;
         }
 
         .glass-card:hover {
-            background: rgba(10, 10, 20, 0.25) !important;
-            border-color: rgba(0, 255, 178, 0.3);
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: rgba(0, 255, 178, 0.5);
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(0, 255, 178, 0.2);
+            box-shadow: 
+                0 12px 40px 0 rgba(0, 255, 178, 0.3),
+                inset 0 0 30px rgba(0, 255, 178, 0.1);
         }
 
-        /* Navbar - Glassmorphic */
-        .navbar {
-            background: rgba(10, 10, 20, 0.3) !important;
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid rgba(0, 255, 178, 0.1);
-        }
-
-        /* Text Glow for Readability */
-        h1, h2, h3, .hero-title {
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 255, 178, 0.3);
-        }
-
-        /* Category Cards - Glassmorphic */
-        .category-card {
-            background: rgba(10, 10, 20, 0.2) !important;
-            backdrop-filter: blur(15px) saturate(180%);
-            -webkit-backdrop-filter: blur(15px) saturate(180%);
-            border: 1px solid rgba(0, 255, 178, 0.15);
-        }
-
-        .category-card:hover {
-            background: rgba(10, 10, 20, 0.35) !important;
-            border-color: rgba(0, 255, 178, 0.4);
-            transform: translateY(-8px) scale(1.02);
-        }
-
-        /* Stats Section - Transparent */
-        .stat-item {
-            background: transparent !important;
-        }
-
-        /* Footer - Glassmorphic */
-        .footer {
-            background: rgba(10, 10, 20, 0.25) !important;
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-top: 1px solid rgba(0, 255, 178, 0.1);
-        }
-
-        /* Buttons - Enhanced Glow */
+        /* Buttons */
         .btn-primary {
             background: rgba(0, 255, 178, 0.2) !important;
             backdrop-filter: blur(10px);
-            border: 2px solid var(--color-primary);
-            box-shadow: 0 0 20px rgba(0, 255, 178, 0.4), inset 0 0 20px rgba(0, 255, 178, 0.1);
+            border: 2px solid #00FFB2 !important;
+            color: #00FFB2 !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 178, 0.4),
+                inset 0 0 20px rgba(0, 255, 178, 0.1);
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            background: rgba(0, 255, 178, 0.3) !important;
-            box-shadow: 0 0 30px rgba(0, 255, 178, 0.6), inset 0 0 30px rgba(0, 255, 178, 0.2);
+            background: rgba(0, 255, 178, 0.4) !important;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 178, 0.6),
+                inset 0 0 30px rgba(0, 255, 178, 0.2);
+            transform: scale(1.05);
         }
 
         .btn-outline {
             background: rgba(255, 255, 255, 0.05) !important;
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3) !important;
+            color: #fff !important;
+            transition: all 0.3s ease;
         }
 
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border-color: var(--color-primary);
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: #00FFB2 !important;
+            color: #00FFB2 !important;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: transparent !important;
+            padding: 4rem 0;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.5) !important;
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00FFB2;
+            text-shadow: 0 0 30px rgba(0, 255, 178, 0.6);
+        }
+
+        /* Categories */
+        .categories-section {
+            background: transparent !important;
+            padding: 4rem 0;
+        }
+
+        .category-card {
+            background: rgba(0, 0, 0, 0.4) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 178, 0.2);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: rgba(0, 255, 178, 0.5);
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 178, 0.5));
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 255, 178, 0.2);
+            padding: 2rem 0;
+        }
+
+        /* Badge */
+        .badge {
+            background: rgba(0, 255, 178, 0.1) !important;
+            border: 1px solid rgba(0, 255, 178, 0.3);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #00FFB2;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 178, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(0, 255, 178, 0);
+            }
+        }
+
+        /* Text Shadows for Readability */
+        h1, h2, h3, p {
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Hero Subtitle */
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .rotating-text {
+            color: #00FFB2;
+            font-weight: 700;
+        }
+
+        /* Section Header */
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 3rem;
+        }
+
+        .price-badge {
+            background: rgba(0, 255, 178, 0.15);
+            border: 1px solid rgba(0, 255, 178, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            color: #00FFB2;
+            font-weight: 700;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: transparent !important;
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
         }
     </style>
 </head>
@@ -267,6 +428,6 @@
     <script src="assets/js/data.js"></script>
     <script src="assets/js/cart.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/fluid-autonomous.js"></script>
+    <script src="assets/js/fluid-complete.js"></script>
 </body>
 </html>
