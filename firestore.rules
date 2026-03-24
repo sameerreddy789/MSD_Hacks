@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Check if user is an admin by reading the user document
+    function isAdmin() {
+      return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      // also allow creation if the user is creating for themselves
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /wishlists/{userId}/items/{productId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /promoCodes/{codeId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /userPurchases/{userId}/products/{productId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      // write is only from Cloud Functions (admin SDK bypassing rules)
+      allow write: if false; 
+    }
+  }
+}

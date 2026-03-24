@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg-primary: #0A0A0F;
+  --color-bg-secondary: #0F0F1A;
+  --color-surface: #13131F;
+  --color-border: #1E1E3A;
+  
+  --color-neon-primary: #00FFB2;
+  --color-neon-secondary: #7B5EFF;
+  --color-neon-tertiary: #FF3CAC;
+  
+  --color-text-primary: #F0F0FF;
+  --color-text-secondary: #8888AA;
+  --color-text-muted: #44445A;
+}
+
+@theme {
+  --color-background: var(--color-bg-primary);
+  --color-background-secondary: var(--color-bg-secondary);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  
+  --color-primary: var(--color-neon-primary);
+  --color-secondary: var(--color-neon-secondary);
+  --color-tertiary: var(--color-neon-tertiary);
+  
+  --color-foreground: var(--color-text-primary);
+  --color-foreground-secondary: var(--color-text-secondary);
+  --color-foreground-muted: var(--color-text-muted);
+
+  --font-heading: var(--font-space-grotesk), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary); 
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface); 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border); 
+}
+
+/* Scanline Effect */
+.scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+  background-size: 100% 4px;
+  opacity: 0.03;
+  z-index: 10;
+}
+
+/* Glitch Animation */
+@keyframes glitch {
+  0% { text-shadow: 2px 0 var(--color-neon-primary), -2px 0 var(--color-neon-tertiary); }
+  20% { text-shadow: -2px 0 var(--color-neon-primary), 2px 0 var(--color-neon-tertiary); }
+  40% { text-shadow: 2px 0 var(--color-neon-primary), -2px 0 var(--color-neon-tertiary); }
+  60% { text-shadow: -2px 0 var(--color-neon-primary), 2px 0 var(--color-neon-tertiary); }
+  80% { text-shadow: 2px 0 var(--color-neon-primary), -2px 0 var(--color-neon-tertiary); }
+  100% { text-shadow: -2px 0 var(--color-neon-primary), 2px 0 var(--color-neon-tertiary); }
+}
+
+.glitch-hover:hover {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+/* Glow effects */
+.glow-primary-box {
+  box-shadow: 0 0 20px #00FFB240;
+}
+.glow-primary-text {
+  text-shadow: 0 0 10px #00FFB280;
+}
+
+/* Base element styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
