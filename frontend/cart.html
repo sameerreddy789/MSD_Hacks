@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - MSDHacks</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header id="navbar" class="navbar scrolled">
+        <div class="container navbar-content">
+            <a href="index.html" class="logo">
+                <span class="logo-main">MSD</span>
+                <span class="logo-sub">_Hacks</span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="products.html" class="nav-link">Products</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-icon" style="color: var(--color-primary);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </a>
+                <button class="btn btn-outline btn-sm" id="loginBtn" onclick="window.location.href='login.html'">Login</button>
+            </div>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="products.html" class="mobile-menu-link">Products</a>
+        <a href="cart.html" class="mobile-menu-link">Cart</a>
+        <button class="btn btn-outline w-full" onclick="window.location.href='login.html'">Login</button>
+    </div>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; min-height: 100vh;">
+        <div class="container" style="padding-bottom: 4rem; max-width: 1200px;">
+            <!-- Cart Content -->
+            <div id="cartContent">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 MSDHacks. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        function renderCart() {
+            const container = document.getElementById('cartContent');
+            const items = Cart.items;
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">Your vault is empty</h3>
+                        <p class="empty-state-description">Looks like you haven't added any tools to your cart yet. Browse our collection to superpower your productivity.</p>
+                        <button class="btn btn-lg btn-primary" onclick="window.location.href='products.html'">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            Explore Tools
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; font-family: var(--font-heading);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-right: 1rem;">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Your Cart
+                    <span style="margin-left: 1rem; font-size: 1.25rem; color: var(--color-foreground-secondary); font-family: var(--font-mono);">(${Cart.getCount()} items)</span>
+                </h1>
+
+                <div style="display: grid; grid-template-columns: 1fr 400px; gap: 3rem; align-items: start;">
+                    <!-- Cart Items -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        ${items.map(item => `
+                            <div class="card" style="padding: 1.5rem; display: flex; gap: 1.5rem; align-items: center;">
+                                <div style="position: relative; width: 120px; height: 90px; background-color: var(--color-background); border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; flex-shrink: 0;">
+                                    <img src="${item.thumbnailURL}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+
+                                <div style="flex: 1;">
+                                    <a href="product-detail.html?slug=${item.slug}" style="color: inherit; text-decoration: none;">
+                                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; font-family: var(--font-heading); transition: color var(--transition-fast);" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-foreground)'">${item.name}</h3>
+                                    </a>
+                                    <p style="font-size: 0.875rem; font-family: var(--font-mono); color: var(--color-foreground-muted); text-transform: uppercase;">Qty: ${item.quantity}</p>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 1rem;">
+                                    <span style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-heading); background-color: rgba(0, 255, 178, 0.1); padding: 0.5rem 0.75rem; border-radius: 8px; text-shadow: 0 0 10px rgba(0, 255, 178, 0.3);">₹${item.price * item.quantity}</span>
+                                    <button onclick="removeItem('${item.id}')" style="display: flex; align-items: center; gap: 0.5rem; color: var(--color-foreground-secondary); background: none; border: none; cursor: pointer; font-family: var(--font-mono); font-size: 0.875rem; transition: color var(--transition-fast);" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--color-foreground-secondary)'">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+
+                        <div style="display: flex; justify-content: flex-end; padding-top: 1rem;">
+                            <button onclick="clearCart()" style="color: var(--color-foreground-secondary); background: none; border: none; cursor: pointer; font-family: var(--font-mono); font-size: 0.875rem; text-decoration: underline; text-underline-offset: 4px; transition: color var(--transition-fast);" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--color-foreground-secondary)'">
+                                Clear all items
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="card" style="padding: 1.5rem; position: sticky; top: 100px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">Order Summary</h3>
+
+                        <div style="font-family: var(--font-mono); font-size: 0.875rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <span style="color: var(--color-foreground-secondary);">Subtotal</span>
+                                <span>₹${Cart.getSubtotal()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <span style="color: var(--color-foreground-secondary);">Taxes (18%)</span>
+                                <span>₹${Cart.getTax().toFixed(2)}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; color: var(--color-primary); font-weight: 700;">
+                                <span>Discount</span>
+                                <span>- ₹0</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; font-family: var(--font-heading);">
+                            <span style="font-size: 1.125rem;">Total</span>
+                            <span style="font-size: 2rem; font-weight: 700;">₹${Cart.getTotal().toFixed(2)}</span>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary w-full" onclick="checkout()" style="text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
+                            Checkout
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+
+                        <div style="text-align: center;">
+                            <p style="font-size: 0.75rem; color: var(--color-foreground-muted); font-family: var(--font-mono); text-transform: uppercase;">Secure Checkout powered by Razorpay</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function removeItem(id) {
+            Cart.remove(id);
+            renderCart();
+        }
+
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your cart?')) {
+                Cart.clear();
+                renderCart();
+            }
+        }
+
+        function checkout() {
+            window.location.href = 'checkout.html';
+        }
+
+        // Initial render
+        renderCart();
+
+        // Listen for cart updates
+        window.addEventListener('storage', renderCart);
+    </script>
+
+    <style>
+        @media (max-width: 1024px) {
+            #cartContent > div > div {
+                grid-template-columns: 1fr !important;
+            }
+            #cartContent .card:last-child {
+                position: static !important;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - MSDHacks</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header id="navbar" class="navbar scrolled">
+        <div class="container navbar-content">
+            <a href="index.html" class="logo">
+                <span class="logo-main">MSD</span>
+                <span class="logo-sub">_Hacks</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; min-height: 100vh;">
+        <div class="container" style="padding-bottom: 4rem; max-width: 600px;">
+            <div id="checkoutContent">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        let processing = false;
+
+        function renderCheckout() {
+            const container = document.getElementById('checkoutContent');
+            const items = Cart.items;
+
+            if (items.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            container.innerHTML = `
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; font-family: var(--font-heading);">Secure Checkout</h1>
+
+                <div class="card" style="padding: 2rem; margin-bottom: 2rem; position: relative;">
+                    <div style="position: absolute; top: 0; right: 2rem; background-color: rgba(0, 255, 178, 0.1); color: var(--color-primary); border-left: 1px solid rgba(0, 255, 178, 0.2); border-right: 1px solid rgba(0, 255, 178, 0.2); border-bottom: 1px solid rgba(0, 255, 178, 0.2); padding: 0.5rem 1rem; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 0 15px rgba(0, 255, 178, 0.2);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        Encrypted
+                    </div>
+
+                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; font-family: var(--font-heading);">Payment Summary</h2>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        ${items.map(item => `
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; font-family: var(--font-mono); border-bottom: 1px solid rgba(42, 42, 58, 0.5); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                                <span style="color: var(--color-foreground-secondary); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name} (x${item.quantity})</span>
+                                <span>₹${item.price * item.quantity}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-heading); font-size: 1.125rem; margin-bottom: 2rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                        <span style="color: var(--color-foreground-secondary);">Total amount to pay:</span>
+                        <span style="font-size: 2rem; font-weight: 700; color: var(--color-primary); text-shadow: 0 0 10px rgba(0, 255, 178, 0.3);">₹${Cart.getTotal().toFixed(2)}</span>
+                    </div>
+
+                    <button id="payBtn" class="btn btn-lg btn-primary w-full" onclick="processPayment()" style="text-transform: uppercase; letter-spacing: 0.1em; position: relative; overflow: hidden;">
+                        <span id="payBtnText">Pay via Razorpay</span>
+                        <div id="payBtnLoader" class="spinner" style="display: none; width: 24px; height: 24px; border-width: 2px; margin: 0 auto;"></div>
+                    </button>
+                </div>
+
+                <div style="text-align: center; color: var(--color-foreground-muted); font-size: 0.875rem;">
+                    <p>By completing this purchase, you agree to our Terms of Service and Privacy Policy.</p>
+                </div>
+            `;
+        }
+
+        async function processPayment() {
+            if (processing) return;
+
+            processing = true;
+            const btn = document.getElementById('payBtn');
+            const btnText = document.getElementById('payBtnText');
+            const btnLoader = document.getElementById('payBtnLoader');
+
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'block';
+
+            // Simulate payment processing
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Success!
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#00FFB2', '#7B5EFF', '#FF3CAC']
+            });
+
+            // Clear cart
+            Cart.clear();
+
+            // Show success
+            document.getElementById('checkoutContent').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon" style="color: var(--color-primary);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="empty-state-title" style="color: var(--color-primary); text-shadow: 0 0 20px rgba(0, 255, 178, 0.6);">Payment Successful!</h3>
+                    <p class="empty-state-description">Your tools have been unlocked. Check your email for download links and instructions.</p>
+                    <button class="btn btn-lg btn-primary" onclick="window.location.href='products.html'">
+                        Continue Shopping
+                    </button>
+                </div>
+            `;
+
+            processing = false;
+        }
+
+        // Initial render
+        renderCheckout();
+    </script>
+</body>
+</html>
