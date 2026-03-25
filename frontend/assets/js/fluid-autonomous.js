@@ -1156,13 +1156,33 @@ function createDoubleFBO(w, h, internalFormat, format, type, param) {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   let texelSizeX = 1.0 / w;
-  let texelSizeY = ring ? gl.LINEAR : gl.NEAREST;
+  let texelSizeY = 1.0 / h;
+
+  return {
+    texture,
+    fbo,
+    width: w,
+    height: h,
+    texelSizeX,
+    texelSizeY,
+    attach(id) {
+      gl.activeTexture(gl.TEXTURE0 + id);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      return id;
+    },
+  };
+}
+
+function initSunraysFramebuffers() {
+  let res = getResolution(config.SUNRAYS_RESOLUTION);
+
+  const texType = ext.halfFloatTexType;
+  const r = ext.formatR;
+  const filtering = ext.supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
 
   sunrays = createFBO(res.width, res.height, r.internalFormat, r.format, texType, filtering);
   sunraysTemp = createFBO(res.width, res.height, r.internalFormat, r.format, texType, filtering);
 }
-
-function createFBO(w, h, internalFormat, format, type, param) {
   gl.activeTexture(gl.TEXTURE0);
   let texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
