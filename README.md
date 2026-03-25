@@ -20,8 +20,9 @@ msd-hacks/
 │   ├── product-detail.html  # Product details
 │   ├── cart.html            # Shopping cart
 │   ├── checkout.html        # Checkout page
-│   ├── ai-picks.html        # AI recommender
 │   ├── login.html           # Login/Register
+│   ├── fluid-autonomous.html # Autonomous fluid simulation showcase
+│   ├── fluid-simple-test.html # Minimal fluid test page
 │   ├── assets/
 │   │   ├── css/
 │   │   │   ├── style.css           # Main styles
@@ -30,9 +31,9 @@ msd-hacks/
 │   │       ├── main.js             # General utilities
 │   │       ├── data.js             # Mock product data
 │   │       ├── cart.js             # Cart management
-│   │       └── auth.js             # Authentication
-│   ├── README.md            # Frontend documentation
-│   └── QUICK_START.md       # Quick start guide
+│   │       ├── auth.js             # Authentication
+│   │       └── fluid-autonomous.js # WebGL fluid simulation
+│   └── FLUID_COMPONENT_README.md   # Fluid simulation docs
 │
 ├── backend/                  # Express API server
 │   ├── config/
@@ -155,7 +156,8 @@ RAZORPAY_KEY_SECRET=your-key-secret
 - ✅ Product browsing with filters & search
 - ✅ Shopping cart (localStorage)
 - ✅ Checkout flow with payment
-- ✅ AI-powered product recommendations
+- ✅ Autonomous WebGL fluid simulation with Lissajous curves
+- ✅ Glassmorphic UI design
 - ✅ User authentication
 - ✅ Cyberpunk/tech design theme
 - ✅ Toast notifications
