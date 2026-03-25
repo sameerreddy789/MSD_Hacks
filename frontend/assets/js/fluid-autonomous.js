@@ -5,7 +5,10 @@ Modified for autonomous animation
 
 "use strict";
 
+console.log("🔵 Fluid script loading...");
 const canvas = document.getElementById("fluidCanvas");
+console.log("🔵 Canvas element:", canvas);
+console.log("🔵 Canvas dimensions:", canvas ? `${canvas.width}x${canvas.height}` : "NULL");
 
 let config = {
   SIM_RESOLUTION: 128,
@@ -1031,12 +1034,17 @@ function updateColors(dt) {
 }
 
 updateKeywords();
+console.log("🟢 updateKeywords() complete");
 resizeCanvas();
+console.log("🟢 resizeCanvas() complete - canvas:", canvas.width, "x", canvas.height);
 initFramebuffers();
+console.log("🟢 initFramebuffers() complete");
 multipleSplats(parseInt(Math.random() * 20) + 5);
+console.log("🟢 Initial splats complete");
 
 let lastUpdateTime = Date.now();
 let colorUpdateTimer = 0.0;
+console.log("🟢 Starting update loop...");
 update();
 
 function update() {
