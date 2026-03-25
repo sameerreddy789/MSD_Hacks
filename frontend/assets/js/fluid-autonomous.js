@@ -6,7 +6,6 @@ Modified for autonomous animation
 "use strict";
 
 const canvas = document.getElementById("fluidCanvas");
-resizeCanvas();
 
 let config = {
   SIM_RESOLUTION: 128,
@@ -1032,6 +1031,7 @@ function updateColors(dt) {
 }
 
 updateKeywords();
+resizeCanvas();
 initFramebuffers();
 multipleSplats(parseInt(Math.random() * 20) + 5);
 
