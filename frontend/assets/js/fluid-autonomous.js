@@ -38,15 +38,15 @@ let config = {
   DYE_RESOLUTION: 1024,
   CAPTURE_RESOLUTION: 512,
   DENSITY_DISSIPATION: 1,
-  VELOCITY_DISSIPATION: 0.2,
+  VELOCITY_DISSIPATION: 0.15,  // Reduced from 0.2 for more fluid persistence
   PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20,
-  CURL: 30,
-  SPLAT_RADIUS: 0.25,
-  SPLAT_FORCE: 6000,
+  CURL: 35,  // Increased from 30 for more swirling motion
+  SPLAT_RADIUS: 0.3,  // Increased from 0.25 for larger splats
+  SPLAT_FORCE: 7000,  // Increased from 6000 for more dynamic movement
   SHADING: true,
   COLORFUL: true,
-  COLOR_UPDATE_SPEED: 10,
+  COLOR_UPDATE_SPEED: 15,  // Increased from 10 for faster color changes
   PAUSED: false,
   BACK_COLOR: { r: 0, g: 0, b: 0 },
   TRANSPARENT: false,
@@ -64,13 +64,14 @@ let config = {
   FREQ_MULTI: 0.1,
 };
 
-var timer = setInterval(randomSplat, 3500);
+var timer = setInterval(randomSplat, 2000);  // Increased frequency from 3500ms to 2000ms for more randomness
 var _runRandom = true;
 var _isSleep = false;
 function randomSplat() {
   // Always generate random splats for continuous animation
   if (_runRandom == true && _isSleep == false) {
-    splatStack.push(parseInt(Math.random() * 20) + 5);
+    // Increased randomness: 15-35 splats instead of 5-25
+    splatStack.push(parseInt(Math.random() * 20) + 15);
   }
 }
 
@@ -115,9 +116,9 @@ function livelyAudioListener(audioArray) {
 function multipleSplats(amount) {
   for (let i = 0; i < amount; i++) {
     const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
-    color.r *= 8.0;  // Reduced from 10.0 (20% decrease)
-    color.g *= 8.0;  // Reduced from 10.0 (20% decrease)
-    color.b *= 8.0;  // Reduced from 10.0 (20% decrease)
+    color.r *= 6.4;  // Reduced from 8.0 (another 20% decrease)
+    color.g *= 6.4;  // Reduced from 8.0 (another 20% decrease)
+    color.b *= 6.4;  // Reduced from 8.0 (another 20% decrease)
     const x = canvas.width * Math.random();
     const y = canvas.height * Math.random();
     const dx = 1000 * (Math.random() - 0.5);
@@ -128,9 +129,9 @@ function multipleSplats(amount) {
 
 function generateColor() {
   let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-  c.r *= 0.12;  // Reduced from 0.15 (20% decrease)
-  c.g *= 0.12;  // Reduced from 0.15 (20% decrease)
-  c.b *= 0.12;  // Reduced from 0.15 (20% decrease)
+  c.r *= 0.096;  // Reduced from 0.12 (another 20% decrease)
+  c.g *= 0.096;  // Reduced from 0.12 (another 20% decrease)
+  c.b *= 0.096;  // Reduced from 0.12 (another 20% decrease)
   return c;
 }
 
@@ -1505,9 +1506,9 @@ function splatPointer(pointer) {
 function multipleSplats(amount) {
   for (let i = 0; i < amount; i++) {
     const color = generateColor();
-    color.r *= 8.0;  // Reduced from 10.0 (20% decrease)
-    color.g *= 8.0;  // Reduced from 10.0 (20% decrease)
-    color.b *= 8.0;  // Reduced from 10.0 (20% decrease)
+    color.r *= 6.4;  // Reduced from 8.0 (another 20% decrease)
+    color.g *= 6.4;  // Reduced from 8.0 (another 20% decrease)
+    color.b *= 6.4;  // Reduced from 8.0 (another 20% decrease)
     const x = Math.random();
     const y = Math.random();
     const dx = 1000 * (Math.random() - 0.5);
