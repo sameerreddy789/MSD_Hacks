@@ -35,7 +35,7 @@ resizeCanvas();
 
 let config = {
   SIM_RESOLUTION: 128,
-  DYE_RESOLUTION: 1024,
+  DYE_RESOLUTION: 819,
   CAPTURE_RESOLUTION: 512,
   DENSITY_DISSIPATION: 1,
   VELOCITY_DISSIPATION: 0.15,
@@ -70,8 +70,8 @@ var _isSleep = false;
 function randomSplat() {
   // Always generate random splats for continuous animation
   if (_runRandom == true && _isSleep == false) {
-    // Increased randomness: 15-35 splats instead of 5-25
-    splatStack.push(parseInt(Math.random() * 20) + 15);
+    // Reduced particle concentration: 12-28 splats (20% reduction)
+    splatStack.push(parseInt(Math.random() * 16) + 12);
   }
 }
 
