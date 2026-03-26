@@ -25,6 +25,12 @@ SOFTWARE.
 "use strict";
 
 const canvas = document.getElementsByTagName("canvas")[0];
+if (!canvas) {
+  console.error("❌ Canvas element not found!");
+} else {
+  console.log("✅ Canvas found:", canvas);
+  console.log("✅ Canvas dimensions:", canvas.width, "x", canvas.height);
+}
 resizeCanvas();
 
 let config = {
@@ -1536,6 +1542,7 @@ function correctRadius(radius) {
 
 // Mouse interaction - immediate response
 canvas.addEventListener('mousedown', e => {
+  console.log("🖱️ Mouse down at:", e.offsetX, e.offsetY);
   let posX = scaleByPixelRatio(e.offsetX);
   let posY = scaleByPixelRatio(e.offsetY);
   let pointer = pointers.find(p => p.id == -1);
@@ -1552,6 +1559,8 @@ canvas.addEventListener("mousemove", (e) => {
   // Always update pointer position for fluid interaction
   updatePointerMoveData(pointer, posX, posY);
 });
+
+console.log("✅ Mouse event listeners attached to canvas");
 
 window.addEventListener("mouseup", () => {
   updatePointerUpData(pointers[0]);
