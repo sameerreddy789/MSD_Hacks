@@ -38,22 +38,22 @@ let config = {
   DYE_RESOLUTION: 1024,
   CAPTURE_RESOLUTION: 512,
   DENSITY_DISSIPATION: 1,
-  VELOCITY_DISSIPATION: 0.15,  // Reduced from 0.2 for more fluid persistence
+  VELOCITY_DISSIPATION: 0.15,
   PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20,
-  CURL: 35,  // Increased from 30 for more swirling motion
-  SPLAT_RADIUS: 0.15,  // Reduced from 0.3 for smaller cursor trail
-  SPLAT_FORCE: 4000,  // Reduced from 7000 for less intense cursor trail
+  CURL: 35,
+  SPLAT_RADIUS: 0.25,  // Restored to original
+  SPLAT_FORCE: 6000,  // Restored to original
   SHADING: true,
   COLORFUL: true,
-  COLOR_UPDATE_SPEED: 15,  // Increased from 10 for faster color changes
+  COLOR_UPDATE_SPEED: 15,
   PAUSED: false,
   BACK_COLOR: { r: 0, g: 0, b: 0 },
   TRANSPARENT: false,
   BLOOM: true,
   BLOOM_ITERATIONS: 8,
   BLOOM_RESOLUTION: 256,
-  BLOOM_INTENSITY: 0.8,
+  BLOOM_INTENSITY: 0.5,
   BLOOM_THRESHOLD: 0.6,
   BLOOM_SOFT_KNEE: 0.7,
   SUNRAYS: true,
@@ -1246,7 +1246,8 @@ function updateKeywords() {
 
 updateKeywords();
 initFramebuffers();
-multipleSplats(parseInt(Math.random() * 20) + 5);
+// Reduced initial splats to prevent flashbang effect: 3-8 instead of 5-25
+multipleSplats(parseInt(Math.random() * 5) + 3);
 
 let lastUpdateTime = Date.now();
 let colorUpdateTimer = 0.0;
@@ -1498,9 +1499,8 @@ function blur(target, temp, iterations) {
 }
 
 function splatPointer(pointer) {
-  // Reduce cursor force to 30% of config value for smaller, subtler trail
-  let dx = pointer.deltaX * config.SPLAT_FORCE * 0.3;
-  let dy = pointer.deltaY * config.SPLAT_FORCE * 0.3;
+  let dx = pointer.deltaX * config.SPLAT_FORCE;
+  let dy = pointer.deltaY * config.SPLAT_FORCE;
   splat(pointer.texcoordX, pointer.texcoordY, dx, dy, pointer.color);
 }
 
@@ -1636,12 +1636,7 @@ function updatePointerDownData(pointer, id, posX, posY) {
   pointer.prevTexcoordY = pointer.texcoordY;
   pointer.deltaX = 0;
   pointer.deltaY = 0;
-  // Generate dimmer color for cursor trail (50% of normal brightness)
-  let color = generateColor();
-  color.r *= 0.5;
-  color.g *= 0.5;
-  color.b *= 0.5;
-  pointer.color = color;
+  pointer.color = generateColor();
 }
 
 function updatePointerMoveData(pointer, posX, posY) {
