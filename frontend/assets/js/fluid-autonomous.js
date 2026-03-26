@@ -115,9 +115,9 @@ function livelyAudioListener(audioArray) {
 function multipleSplats(amount) {
   for (let i = 0; i < amount; i++) {
     const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
-    color.r *= 10.0;
-    color.g *= 10.0;
-    color.b *= 10.0;
+    color.r *= 8.0;  // Reduced from 10.0 (20% decrease)
+    color.g *= 8.0;  // Reduced from 10.0 (20% decrease)
+    color.b *= 8.0;  // Reduced from 10.0 (20% decrease)
     const x = canvas.width * Math.random();
     const y = canvas.height * Math.random();
     const dx = 1000 * (Math.random() - 0.5);
@@ -128,9 +128,9 @@ function multipleSplats(amount) {
 
 function generateColor() {
   let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-  c.r *= 0.15;
-  c.g *= 0.15;
-  c.b *= 0.15;
+  c.r *= 0.12;  // Reduced from 0.15 (20% decrease)
+  c.g *= 0.12;  // Reduced from 0.15 (20% decrease)
+  c.b *= 0.12;  // Reduced from 0.15 (20% decrease)
   return c;
 }
 
@@ -1505,9 +1505,9 @@ function splatPointer(pointer) {
 function multipleSplats(amount) {
   for (let i = 0; i < amount; i++) {
     const color = generateColor();
-    color.r *= 10.0;
-    color.g *= 10.0;
-    color.b *= 10.0;
+    color.r *= 8.0;  // Reduced from 10.0 (20% decrease)
+    color.g *= 8.0;  // Reduced from 10.0 (20% decrease)
+    color.b *= 8.0;  // Reduced from 10.0 (20% decrease)
     const x = Math.random();
     const y = Math.random();
     const dx = 1000 * (Math.random() - 0.5);
@@ -1673,9 +1673,9 @@ function correctDeltaY(delta) {
 
 function generateColor() {
   let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-  c.r *= 0.15;
-  c.g *= 0.15;
-  c.b *= 0.15;
+  c.r *= 0.12;  // Reduced from 0.15 (20% decrease)
+  c.g *= 0.12;  // Reduced from 0.15 (20% decrease)
+  c.b *= 0.12;  // Reduced from 0.15 (20% decrease)
   return c;
 }
 
