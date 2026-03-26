@@ -62,7 +62,10 @@ var timer = setInterval(randomSplat, 3500);
 var _runRandom = true;
 var _isSleep = false;
 function randomSplat() {
-  if (_runRandom == true && _isSleep == false && _randomSplats) splatStack.push(parseInt(Math.random() * 20) + 5);
+  // Always generate random splats for continuous animation
+  if (_runRandom == true && _isSleep == false) {
+    splatStack.push(parseInt(Math.random() * 20) + 5);
+  }
 }
 
 function livelyWallpaperPlaybackChanged(data) {
@@ -125,7 +128,7 @@ function generateColor() {
   return c;
 }
 
-let _randomSplats = false;
+let _randomSplats = true; // Enable random splats by default
 let _audioReact = false;
 function livelyPropertyListener(name, val) {
   switch (name) {
@@ -1531,37 +1534,22 @@ function correctRadius(radius) {
   return radius;
 }
 
-// canvas.addEventListener('mousedown', e => {
-//     let posX = scaleByPixelRatio(e.offsetX);
-//     let posY = scaleByPixelRatio(e.offsetY);
-//     let pointer = pointers.find(p => p.id == -1);
-//     if (pointer == null)
-//         pointer = new pointerPrototype();
-//     updatePointerDownData(pointer, -1, posX, posY);
-// });
-let lastMove = -1;
-function checkLastMove() {
-  const currentMove = window.performance.now();
-  if (currentMove - lastMove > 1000) {
-    lastMove = currentMove;
-    return true;
-  }
-  return false;
-}
-
-canvas.addEventListener("mousemove", (e) => {
-  if (checkLastMove()) {
-    let posX = scaleByPixelRatio(e.offsetX);
-    let posY = scaleByPixelRatio(e.offsetY);
-    let pointer = pointers.find((p) => p.id == -1);
-    if (pointer == null) pointer = new pointerPrototype();
-    updatePointerDownData(pointer, -1, posX, posY);
-  }
-
-  let pointer = pointers[0];
-  if (!pointer.down) return;
+// Mouse interaction - immediate response
+canvas.addEventListener('mousedown', e => {
   let posX = scaleByPixelRatio(e.offsetX);
   let posY = scaleByPixelRatio(e.offsetY);
+  let pointer = pointers.find(p => p.id == -1);
+  if (pointer == null)
+    pointer = new pointerPrototype();
+  updatePointerDownData(pointer, -1, posX, posY);
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  let pointer = pointers[0];
+  let posX = scaleByPixelRatio(e.offsetX);
+  let posY = scaleByPixelRatio(e.offsetY);
+  
+  // Always update pointer position for fluid interaction
   updatePointerMoveData(pointer, posX, posY);
 });
 
@@ -1631,6 +1619,9 @@ function updatePointerMoveData(pointer, posX, posY) {
   pointer.deltaX = correctDeltaX(pointer.texcoordX - pointer.prevTexcoordX);
   pointer.deltaY = correctDeltaY(pointer.texcoordY - pointer.prevTexcoordY);
   pointer.moved = Math.abs(pointer.deltaX) > 0 || Math.abs(pointer.deltaY) > 0;
+  
+  // Mark pointer as down for continuous interaction
+  pointer.down = true;
 }
 
 function updatePointerUpData(pointer) {
