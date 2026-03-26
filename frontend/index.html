@@ -27,6 +27,8 @@
             height: 100%;
             z-index: 1;
             display: block;
+            touch-action: none; /* Enable touch events for mobile */
+            cursor: crosshair; /* Show cursor feedback */
         }
 
         /* Content on top of fluid */
@@ -43,8 +45,39 @@
         .nav-link,
         .cart-icon,
         .category-card,
-        a {
+        .stat-card,
+        .hero-actions,
+        a,
+        button {
             pointer-events: auto;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .navbar {
+                padding: 0.75rem 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Navbar */

@@ -1540,24 +1540,41 @@ function correctRadius(radius) {
   return radius;
 }
 
-// Mouse interaction - immediate response
+// Mouse interaction - immediate response with proper initialization
 canvas.addEventListener('mousedown', e => {
   console.log("🖱️ Mouse down at:", e.offsetX, e.offsetY);
   let posX = scaleByPixelRatio(e.offsetX);
   let posY = scaleByPixelRatio(e.offsetY);
-  let pointer = pointers.find(p => p.id == -1);
-  if (pointer == null)
-    pointer = new pointerPrototype();
+  let pointer = pointers[0];
   updatePointerDownData(pointer, -1, posX, posY);
 });
 
 canvas.addEventListener("mousemove", (e) => {
+  console.log("🖱️ Mouse move at:", e.offsetX, e.offsetY);
   let pointer = pointers[0];
+  if (!pointer) {
+    console.error("❌ Pointer not initialized!");
+    return;
+  }
+  
   let posX = scaleByPixelRatio(e.offsetX);
   let posY = scaleByPixelRatio(e.offsetY);
   
+  // Initialize pointer if not already down
+  if (!pointer.down) {
+    updatePointerDownData(pointer, -1, posX, posY);
+  }
+  
   // Always update pointer position for fluid interaction
   updatePointerMoveData(pointer, posX, posY);
+});
+
+canvas.addEventListener("mouseenter", (e) => {
+  console.log("🖱️ Mouse entered canvas");
+  let pointer = pointers[0];
+  let posX = scaleByPixelRatio(e.offsetX);
+  let posY = scaleByPixelRatio(e.offsetY);
+  updatePointerDownData(pointer, -1, posX, posY);
 });
 
 console.log("✅ Mouse event listeners attached to canvas");
@@ -1631,6 +1648,11 @@ function updatePointerMoveData(pointer, posX, posY) {
   
   // Mark pointer as down for continuous interaction
   pointer.down = true;
+  
+  // Log for debugging
+  if (pointer.moved) {
+    console.log("✅ Pointer moved! Delta:", pointer.deltaX.toFixed(4), pointer.deltaY.toFixed(4));
+  }
 }
 
 function updatePointerUpData(pointer) {
