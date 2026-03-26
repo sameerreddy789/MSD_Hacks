@@ -42,8 +42,8 @@ let config = {
   PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20,
   CURL: 35,  // Increased from 30 for more swirling motion
-  SPLAT_RADIUS: 0.3,  // Increased from 0.25 for larger splats
-  SPLAT_FORCE: 7000,  // Increased from 6000 for more dynamic movement
+  SPLAT_RADIUS: 0.15,  // Reduced from 0.3 for smaller cursor trail
+  SPLAT_FORCE: 4000,  // Reduced from 7000 for less intense cursor trail
   SHADING: true,
   COLORFUL: true,
   COLOR_UPDATE_SPEED: 15,  // Increased from 10 for faster color changes
@@ -1498,8 +1498,9 @@ function blur(target, temp, iterations) {
 }
 
 function splatPointer(pointer) {
-  let dx = pointer.deltaX * config.SPLAT_FORCE;
-  let dy = pointer.deltaY * config.SPLAT_FORCE;
+  // Reduce cursor force to 30% of config value for smaller, subtler trail
+  let dx = pointer.deltaX * config.SPLAT_FORCE * 0.3;
+  let dy = pointer.deltaY * config.SPLAT_FORCE * 0.3;
   splat(pointer.texcoordX, pointer.texcoordY, dx, dy, pointer.color);
 }
 
@@ -1635,7 +1636,12 @@ function updatePointerDownData(pointer, id, posX, posY) {
   pointer.prevTexcoordY = pointer.texcoordY;
   pointer.deltaX = 0;
   pointer.deltaY = 0;
-  pointer.color = generateColor();
+  // Generate dimmer color for cursor trail (50% of normal brightness)
+  let color = generateColor();
+  color.r *= 0.5;
+  color.g *= 0.5;
+  color.b *= 0.5;
+  pointer.color = color;
 }
 
 function updatePointerMoveData(pointer, posX, posY) {
