@@ -1,4 +1,4 @@
-# MSDHacks - MERN Stack E-Commerce Platform
+# MSDHacks - Cool & Productive E-Commerce Platform
 
 A complete e-commerce platform for selling productivity tools and digital products.
 
