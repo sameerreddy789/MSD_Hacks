@@ -7,7 +7,7 @@ const MockData = {
       slug: 'examly-course-video-fastener',
       description: 'Speed through Examly course videos — 1 second of watching counts as 1 minute in the backend.',
       longDescription: 'A browser extension built for mbu.examly.io that accelerates your course video progress. When you watch a video for just 1 second, the backend registers it as 1 minute of watch time. Complete hours of course content in minutes. Works seamlessly with all Examly course videos.',
-      price: 99,
+      price: 249,
       discountPrice: null,
       category: 'Browser Extensions',
       thumbnailURL: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
@@ -16,7 +16,9 @@ const MockData = {
       rating: 4.9,
       reviewCount: 312,
       featured: true,
-      tags: ['examly', 'video', 'speed', 'course', 'mbu', 'browser extension']
+      tags: ['examly', 'video', 'speed', 'course', 'mbu', 'browser extension'],
+      contactName: 'Sameer',
+      contactPhone: '+91 89851 37419'
     }
   ],
 

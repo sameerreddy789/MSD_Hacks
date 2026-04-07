@@ -125,10 +125,10 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
                         <div class="card" style="text-align: center; padding: 1rem;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin: 0 auto 0.5rem;">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             </svg>
-                            <div style="font-size: 0.875rem; font-weight: 700; margin-bottom: 0.25rem;">Instant Delivery</div>
-                            <div style="font-size: 0.75rem; color: var(--color-foreground-muted);">Download immediately</div>
+                            <div style="font-size: 0.875rem; font-weight: 700; margin-bottom: 0.25rem;">Manual Delivery</div>
+                            <div style="font-size: 0.75rem; color: var(--color-foreground-muted);">Contact creator for access</div>
                         </div>
                         <div class="card" style="text-align: center; padding: 1rem;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin: 0 auto 0.5rem; color: #fbbf24;">
@@ -156,20 +156,34 @@
                         <div style="position: absolute; left: 0; top: 0; width: 4px; height: 100%; background-color: var(--color-primary);"></div>
                         <div style="display: flex; align-items: flex-end; gap: 1rem; margin-bottom: 0.5rem;">
                             <span style="font-size: 2.5rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-heading); text-shadow: 0 0 10px rgba(0, 255, 178, 0.3);">₹${product.discountPrice || product.price}</span>
-                            ${product.discountPrice ? `<span style="font-size: 1.25rem; color: var(--color-foreground-muted); text-decoration: line-through; margin-bottom: 0.5rem;">₹${product.price}</span>` : ''}
+                            ${product.discountPrice ? '<span style="font-size: 1.25rem; color: var(--color-foreground-muted); text-decoration: line-through; margin-bottom: 0.5rem;">₹' + product.price + '</span>' : ''}
                         </div>
                         <p style="font-size: 0.875rem; color: var(--color-foreground-muted); margin-bottom: 1.5rem;">One-time payment. Lifetime access. Free updates.</p>
 
                         <div style="display: flex; gap: 1rem;">
-                            <button class="btn btn-lg btn-primary" style="flex: 1;" onclick='addToCart(${JSON.stringify(product)})'>
+                            <button class="btn btn-lg btn-primary" style="flex: 1;" onclick="showBuyModal()">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
                                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                                 </svg>
-                                Add to Vault
+                                Buy Now
                             </button>
-                            <button class="btn btn-lg btn-outline" style="flex: 1;">Try Demo</button>
+                            <button class="btn btn-lg btn-outline" style="flex: 1;" onclick="showInstructions()">Try Demo</button>
+                        </div>
+                    </div>
+
+                    <!-- How It Works -->
+                    <div class="card" style="padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; font-family: var(--font-heading);">📋 How It Works</h3>
+                        <ol style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem; color: var(--color-foreground-secondary); line-height: 1.6;">
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--color-primary); font-weight: 700; min-width: 1.5rem;">1.</span>Load the extension from the zip file in Chrome (chrome://extensions → Developer mode → Load unpacked)</li>
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--color-primary); font-weight: 700; min-width: 1.5rem;">2.</span>Use the ID & password given by the creator to activate</li>
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--color-primary); font-weight: 700; min-width: 1.5rem;">3.</span>Go to any Examly course video, start it and pause after 1 second</li>
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--color-primary); font-weight: 700; min-width: 1.5rem;">4.</span>Click the extension button (bottom right corner)</li>
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--color-primary); font-weight: 700; min-width: 1.5rem;">5.</span>Continue watching — each second counts as 1 minute of watch time</li>
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--color-primary); font-weight: 700; min-width: 1.5rem;">6.</span>Stop the extension and refresh the page to see updated time</li>
+                        </ol>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(0,255,178,0.08); border-radius: 8px; border: 1px solid rgba(0,255,178,0.15); font-size: 0.85rem; color: var(--color-foreground-secondary);">
+                            <strong style="color: var(--color-primary);">💡 Pro tip:</strong> For multiple videos — start video, pause, click extension, watch briefly, stop extension, move to next video. Refresh once at the end to save time.
                         </div>
                     </div>
 
@@ -183,6 +197,10 @@
                             <span style="color: var(--color-foreground-secondary);">Version</span>
                             <span style="font-family: var(--font-mono);">${product.version}</span>
                         </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(42, 42, 58, 0.5);">
+                            <span style="color: var(--color-foreground-secondary);">Works on</span>
+                            <span style="font-family: var(--font-mono);">mbu.examly.io</span>
+                        </div>
                         <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
                             <span style="color: var(--color-foreground-secondary);">Rating</span>
                             <span style="font-family: var(--font-mono); color: #fbbf24;">${product.rating} ⭐ (${product.reviewCount} reviews)</span>
@@ -190,10 +208,73 @@
                     </div>
                 </div>
             `;
+
+            // Buy Modal
+            const buyModal = document.createElement('div');
+            buyModal.id = 'buyModal';
+            buyModal.style.cssText = 'display:none; position:fixed; inset:0; z-index:1000; align-items:center; justify-content:center;';
+            buyModal.innerHTML = `
+                <div style="position:absolute; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);" onclick="closeBuyModal()"></div>
+                <div style="position:relative; background:var(--color-background); border:1px solid var(--color-border); border-radius:16px; padding:2rem; max-width:400px; width:90%; box-shadow:0 0 30px rgba(0,255,178,0.2);">
+                    <h3 style="font-size:1.25rem; font-weight:700; margin-bottom:0.5rem; font-family:var(--font-heading);">📞 Contact to Purchase</h3>
+                    <p style="font-size:0.875rem; color:var(--color-foreground-secondary); margin-bottom:1.5rem;">Call or message the creator to get your extension zip file and login credentials.</p>
+                    <div style="background:rgba(0,255,178,0.06); border:1px solid rgba(0,255,178,0.15); border-radius:12px; padding:1.25rem; margin-bottom:1.5rem;">
+                        <div style="margin-bottom:1rem;">
+                            <div style="font-size:0.75rem; color:var(--color-foreground-muted); margin-bottom:0.25rem;">Name</div>
+                            <div style="font-size:1.1rem; font-weight:700;">${product.contactName || 'Sameer'}</div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.75rem; color:var(--color-foreground-muted); margin-bottom:0.25rem;">Phone</div>
+                            <div style="font-size:1.1rem; font-weight:700; color:var(--color-primary);">${product.contactPhone || '+91 89851 37419'}</div>
+                        </div>
+                    </div>
+                    <a href="tel:${(product.contactPhone || '+918985137419').replace(/\s/g, '')}" class="btn btn-primary" style="width:100%; text-align:center; margin-bottom:0.75rem;">
+                        📞 Call Now
+                    </a>
+                    <a href="https://wa.me/${(product.contactPhone || '+918985137419').replace(/[\s+]/g, '')}" target="_blank" class="btn btn-outline" style="width:100%; text-align:center;">
+                        💬 WhatsApp
+                    </a>
+                </div>
+            `;
+            document.body.appendChild(buyModal);
+
+            // Instructions Modal
+            const instrModal = document.createElement('div');
+            instrModal.id = 'instrModal';
+            instrModal.style.cssText = 'display:none; position:fixed; inset:0; z-index:1000; align-items:center; justify-content:center;';
+            instrModal.innerHTML = `
+                <div style="position:absolute; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);" onclick="closeInstructions()"></div>
+                <div style="position:relative; background:var(--color-background); border:1px solid var(--color-border); border-radius:16px; padding:2rem; max-width:500px; width:90%; max-height:80vh; overflow-y:auto; box-shadow:0 0 30px rgba(0,255,178,0.2);">
+                    <h3 style="font-size:1.25rem; font-weight:700; margin-bottom:1rem; font-family:var(--font-heading);">🚀 Setup Instructions</h3>
+                    <ol style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem; font-size:0.9rem; color:var(--color-foreground-secondary); line-height:1.6;">
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">1.</span>Extract the zip file you received from the creator</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">2.</span>Open Chrome and go to chrome://extensions</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">3.</span>Enable "Developer mode" (top right toggle)</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">4.</span>Click "Load unpacked" and select the extracted folder</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">5.</span>Enter the ID and password provided by the creator</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">6.</span>Go to mbu.examly.io and open any course video</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">7.</span>Start the video, pause after 1 second</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">8.</span>Click the extension button (bottom right)</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">9.</span>Watch for X seconds = X minutes of watch time registered</li>
+                        <li style="display:flex; gap:0.75rem;"><span style="color:var(--color-primary); font-weight:700; min-width:1.5rem;">10.</span>Stop extension and refresh page to see updated progress</li>
+                    </ol>
+                    <button class="btn btn-primary" style="width:100%; margin-top:1.5rem;" onclick="closeInstructions()">Got it!</button>
+                </div>
+            `;
+            document.body.appendChild(instrModal);
         }
 
-        function addToCart(product) {
-            Cart.add(product);
+        function showBuyModal() {
+            document.getElementById('buyModal').style.display = 'flex';
+        }
+        function closeBuyModal() {
+            document.getElementById('buyModal').style.display = 'none';
+        }
+        function showInstructions() {
+            document.getElementById('instrModal').style.display = 'flex';
+        }
+        function closeInstructions() {
+            document.getElementById('instrModal').style.display = 'none';
         }
     </script>
 
