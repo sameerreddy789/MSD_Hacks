@@ -177,9 +177,9 @@ function updateUrl(params) {
 // Copy to clipboard
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
-    Cart.showToast('Copied to clipboard!', 'success');
+    console.log('Copied to clipboard!');
   }).catch(() => {
-    Cart.showToast('Failed to copy', 'error');
+    console.log('Failed to copy');
   });
 }
 
