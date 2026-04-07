@@ -17,8 +17,8 @@ const MockData = {
       reviewCount: 312,
       featured: true,
       tags: ['examly', 'video', 'speed', 'course', 'mbu', 'browser extension'],
-      contactName: 'Sameer',
-      contactPhone: '+91 89851 37419'
+      contactName: 'Pavan',
+      contactPhone: '+91 93924 79549'
     }
   ],
 
