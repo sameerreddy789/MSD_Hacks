@@ -1,4 +1,4 @@
-# MSDHacks - Cool & Productive E-Commerce Platform
+# MSDHacks - Cool & Productive Extensions to Boost Up Life
 
 A complete e-commerce platform for selling productivity tools and digital products.
 
