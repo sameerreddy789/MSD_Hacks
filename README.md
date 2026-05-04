@@ -10,7 +10,7 @@ A complete e-commerce platform for selling productivity tools and digital produc
 - **Authentication:** JWT + bcrypt
 - **Payment:** Razorpay/Stripe integration
 
-## 📁 Project Structure
+## 📁 Project Structure!
 
 ```
 msd-hacks/
